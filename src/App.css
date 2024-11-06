@@ -13,3 +13,27 @@
 .flex-items-center {
   @apply flex items-center justify-between
 }
+
+.bg-darkBG{
+  background-color: '#0f1214';
+}
+
+.bg-darkCardBG{
+  background-color: '#11171d';
+}
+
+.text-primary {
+  color: "#040f3d",
+}
+
+.text-secondary {
+  color: '#757575'
+}
+
+.text-text {
+  color: '#90caf9',
+}
+
+.text-white {
+  color: white;
+}

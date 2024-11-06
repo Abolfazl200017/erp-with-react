@@ -1,8 +1,9 @@
+import { Box } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 
 function FullPageLoadingSpinner() {
     
-    return <div className="fixed top-0 right-0 w-screen h-screen flex flex-col items-center justify-center bg-darkBG">
+    return <Box sx={{ position: 'fixed', top: 0, right: 0, width: '100vw', height: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: 'darkBG.main' }} >
         <img className='grayscale w-20 h-20 rounded mb-5' src="/images/logo.webp" />
         <div>
             <svg width={0} height={0}>
@@ -15,7 +16,7 @@ function FullPageLoadingSpinner() {
             </svg>
             <CircularProgress sx={{ 'svg circle': { stroke: 'url(#my_gradient)' } }} />
         </div>
-    </div>
+    </Box>
 }
 
 export default FullPageLoadingSpinner
