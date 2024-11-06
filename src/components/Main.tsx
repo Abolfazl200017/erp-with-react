@@ -29,13 +29,12 @@ const MUIMain = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })
 }));
 
 function Main({ open }) {
-
   return (
-    <MUIMain open={open} className='min-h-screen' style={{ paddingRight: drawerWidth+24 }}>
-        <DrawerHeader />
-        <Outlet />
+    <MUIMain open={open} style={{ paddingRight: drawerWidth + 24, minHeight: '100vh' }}>
+      <DrawerHeader />
+      <Outlet />
     </MUIMain>
-  )
+  );
 }
 
-export default Main
+export default Main;
