@@ -1,0 +1,15 @@
+@import './assets/font/font.css';
+@tailwind base;
+@tailwind utilities;
+
+#root {
+  max-width: 1536px;
+  margin: 0 auto;
+  padding: 0rem;
+  text-align: center;
+  font-family: 'Shabnam';
+}
+
+.flex-items-center {
+  @apply flex items-center justify-between
+}
