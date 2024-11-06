@@ -40,11 +40,11 @@ function Header({ handleDrawerOpen, open }) {
             aria-label="open drawer"
             onClick={handleDrawerOpen}
             edge="start"
-            sx={{ ml: 2, ...(open && { display: 'none' }) }}
+            sx={{ mr: 2, ...(open && { display: 'none' }) }}
           >
             <MenuIcon />
           </IconButton>
-          <Box sx={{ height: '4rem', py: 2, mx: 1 }}>
+          <Box sx={{ height: '4rem', py: 2, mr: 1 }}>
             <Box component="img" src="/images/logo.webp" sx={{ height: '100%', aspectRatio: '1 / 1' }} />
           </Box>
           <Typography variant="h6" noWrap component="div" sx={{ fontWeight: 'bold' }}>

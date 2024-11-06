@@ -1,12 +1,14 @@
-import { todoListHome } from "../../assets/image"
+import { Box } from '@mui/material';
+import { todoListHome } from '../../assets/image';
 
 export const HomeContainer = () => {
-
   return (
-    <div className="my-auto flex flex-col items-center justify-center">
-      <div className="w-3/4">
-        <img src={todoListHome} alt="todo-list" className="w-full" />
-      </div>
-    </div>
-  )
-}
+    <Box
+      sx={{ marginY: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}
+    >
+      <Box sx={{ width: '75%' }}>
+        <Box component="img" src={todoListHome} alt="todo-list" sx={{ width: '100%' }} />
+      </Box>
+    </Box>
+  );
+};

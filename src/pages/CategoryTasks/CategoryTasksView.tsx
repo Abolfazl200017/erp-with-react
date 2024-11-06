@@ -1,33 +1,36 @@
-import * as React from "react";
+import * as React from 'react';
 import AddIcon from '@mui/icons-material/Add';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import AddTaskDialog from './AddTask';
-import { Divider } from '@mui/material';
+import { Box, Button, Divider, Typography } from '@mui/material';
 import TaskList from './TaskList';
 
-
-function CategoryTasksView({name, todos, isDialogOpen, openDialog, closeDialog}) {
+function CategoryTasksView({ name, todos, isDialogOpen, openDialog, closeDialog }) {
   const [isHovered, setIsHovered] = React.useState(false);
 
   return (
-    <div className="w-full text-start px-16">
-      <div className="text-2xl font-bold">{name}</div>
-
-      <TaskList category={name} todos={Object.entries(todos[name].todos)} />
-
-      <Divider sx={{ marginTop: 2 }} />
-      <button
+    <Box sx={{ width: '100%', textAlign: 'start', px: 16 }}>
+      <Typography variant="h4" component="div" sx={{ fontWeight: 'bold' }}>
+        {name}
+      </Typography>
+      <TaskList category={name} todos={Object.entries(todos[name].todos)} /> <Divider sx={{ marginTop: 2 }} />
+      <Button
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        className="py-3"
+        sx={{ py: 3 }}
         onClick={openDialog}
       >
-        <span className={`${isHovered ? 'text-text' : 'text-secondary'} transition-colors ml-2`}>افزودن وظیفه</span>
+        <Typography
+          component="span"
+          sx={{ color: isHovered ? 'text.primary' : 'secondary.main', transition: 'color 0.3s', ml: 2 }}
+        >
+          افزودن وظیفه
+        </Typography>
         {isHovered ? <AddCircleIcon color="primary" /> : <AddIcon color="primary" />}
-      </button>
+      </Button>
       <AddTaskDialog open={isDialogOpen} handleClose={closeDialog} categoryName={name} />
-    </div>
-  )
+    </Box>
+  );
 }
 
-export default CategoryTasksView
+export default CategoryTasksView;

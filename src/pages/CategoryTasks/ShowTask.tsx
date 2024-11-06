@@ -3,9 +3,9 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/
 function ShowTaskDialog({ open, handleOpen, handleClose, title, body }) {
   return (
     <>
-      <button onClick={handleOpen} className="mr-3 hover:text-text transition-colors">
+      <Button onClick={handleOpen} sx={{ mr: 3, '&:hover': { color: 'text.primary', transition: 'color 0.3s' } }}>
         {title}
-      </button>
+      </Button>
 
       <Dialog
         open={open}
