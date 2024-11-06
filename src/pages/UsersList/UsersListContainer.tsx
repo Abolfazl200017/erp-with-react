@@ -1,11 +1,15 @@
 import * as React from 'react';
 import { styled } from '@mui/system';
 import { TablePagination, tablePaginationClasses as classes } from '@mui/material';
+import { getAllUsers } from '../../services/userServices';
 
 export const UsersListContainer = () => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
+  React.useEffect(() => {
+    getAllUsers().then(console.log)
+  }, [])
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 

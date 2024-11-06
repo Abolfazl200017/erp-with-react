@@ -3,7 +3,6 @@ import { HOME, SERVER_ERROR } from './CONSTANT';
 import ServerError from 'pages/error/ServerError';
 import NotFound from 'pages/error/NotFound';
 import Home from 'pages/Home';
-import CategoryTasks from 'pages/CategoryTasks';
 import MainLayout from 'layouts/MainLayout';
 import UsersListContainer from 'pages/UsersList';
 
@@ -12,7 +11,6 @@ export const RouterConfig = () => {
     <Routes>
       <Route path="/" element={<MainLayout />}>
         <Route path={HOME} element={<Home />} />
-        <Route path="category/:name" element={<CategoryTasks />} />
         <Route path="/users" element={<UsersListContainer />} />
         <Route path="/users/:id" element={<div>single user worksdd</div>} />
         <Route path="/article" element={<div>articles list works!</div>} />

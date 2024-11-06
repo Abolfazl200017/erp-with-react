@@ -1,3 +1,2 @@
-export const BASE_URL = 'https://dummyjson.com/'
-export const LOGIN = 'auth/login'
-export const GET_CURRENT_ATHENTICATION = 'user/me'
+export const BASE_URL = "https://my-json-server.typicode.com/Abolfazl200017/erp-json-server/"
+export const GET_ALL_USERS = "users"
