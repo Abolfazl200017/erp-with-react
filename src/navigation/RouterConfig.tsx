@@ -5,6 +5,7 @@ import NotFound from 'pages/error/NotFound';
 import Home from 'pages/Home';
 import CategoryTasks from 'pages/CategoryTasks';
 import MainLayout from 'layouts/MainLayout';
+import UsersListContainer from 'pages/UsersList';
 
 export const RouterConfig = () => {
   return (
@@ -12,7 +13,7 @@ export const RouterConfig = () => {
       <Route path="/" element={<MainLayout />}>
         <Route path={HOME} element={<Home />} />
         <Route path="category/:name" element={<CategoryTasks />} />
-        <Route path="/users" element={<div>users list works!</div>} />
+        <Route path="/users" element={<UsersListContainer />} />
         <Route path="/users/:id" element={<div>single user worksdd</div>} />
         <Route path="/article" element={<div>articles list works!</div>} />
       </Route>
