@@ -5,17 +5,18 @@ import CssBaseline from '@mui/material/CssBaseline';
 import AppProviders from './contexts/AppProvider';
 
 import { RouterConfig } from 'navigation/RouterConfig';
+import { Box } from '@mui/material';
 
 
 function App() {
   return (
     <>
-      <div className="bg-darkBG text-white">
+      <Box sx={{ backgroundColor: 'darkBG.main', color: 'white', }} >
         <AppProviders>
           <CssBaseline />
           <RouterConfig />
         </AppProviders>
-      </div>
+      </Box>
     </>
   );
 }
