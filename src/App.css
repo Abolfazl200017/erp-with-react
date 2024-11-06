@@ -1,6 +1,4 @@
 @import './assets/font/font.css';
-@tailwind base;
-@tailwind utilities;
 
 #root {
   max-width: 1536px;
@@ -8,32 +6,4 @@
   padding: 0rem;
   text-align: center;
   font-family: 'Shabnam';
-}
-
-.flex-items-center {
-  @apply flex items-center justify-between
-}
-
-.bg-darkBG{
-  background-color: '#0f1214';
-}
-
-.bg-darkCardBG{
-  background-color: '#11171d';
-}
-
-.text-primary {
-  color: "#040f3d",
-}
-
-.text-secondary {
-  color: '#757575'
-}
-
-.text-text {
-  color: '#90caf9',
-}
-
-.text-white {
-  color: white;
 }
