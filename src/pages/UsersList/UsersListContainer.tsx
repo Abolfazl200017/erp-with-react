@@ -1,20 +1,20 @@
-import React from 'react';
-import { Box, Button, Paper } from '@mui/material';
-import { getAllUsers } from '../../services/userServices';
+import React, { useState, useEffect } from 'react';
+import {
+  Box,
+  Button,
+  Paper,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from '@mui/material';
+import { getAllUsers, deleteUser, updateUser } from '../../services/usersServices';
 import { DataGrid, GridColDef, GridPaginationModel } from '@mui/x-data-grid';
 import { TableSkeleton } from 'components/Skeleton';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-
-export type UserData = {
-  id: number;
-  username: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  gender: 'male' | 'female';
-  age: number;
-};
+import { UserData } from '../../redux/users/usersSlice';
 
 const persianLocaleText = {
   noRowsLabel: 'بدون داده',
@@ -33,66 +33,86 @@ const persianLocaleText = {
   },
 };
 
-const columnHeaders: GridColDef[] = [
-  { field: 'index', headerName: 'ردیف' },
-  { field: 'firstname', headerName: 'نام' },
-  { field: 'lastname', headerName: 'نام خانوادگی' },
-  { field: 'email', headerName: 'ایمیل', minWidth: 250 },
-  { field: 'gender', headerName: 'جنسیت' },
-  { field: 'age', headerName: 'سن' },
-  {
-    field: 'actions',
-    headerName: 'عملیات',
-    width: 100,
-    renderCell: (params) => (
-      <Box gap={1} sx={{ height: 1, display: 'flex', alignItems: 'center' }}>
-        <Button
-          variant="text"
-          color="primary"
-          sx={{
-            borderRadius: '50%',
-            minWidth: 0,
-            width: 30,
-            height: 30,
-            padding: 0,
-          }}
-          onClick={() => console.log(params.row, 'edit')}
-        >
-          <EditIcon />
-        </Button>
-        <Button
-          variant="text"
-          color="error"
-          sx={{
-            borderRadius: '50%',
-            minWidth: 0,
-            width: 30,
-            height: 30,
-            padding: 0,
-          }}
-          onClick={() => console.log(params.row, 'delete')}
-        >
-          <DeleteIcon />
-        </Button>
-      </Box>
-    ),
-    sortable: false,
-    filterable: false,
-  },
-];
-
 export const UsersListContainer = () => {
-  const [users, setUsers] = React.useState<UserData[] | 'loading'>('loading');
-  const [paginationModel, setPaginationModel] = React.useState<GridPaginationModel>({
+  const [users, setUsers] = useState<UserData[] | 'loading'>('loading');
+  const [selectedUser, setSelectedUser] = useState<UserData | null>(null);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [dialogAction, setDialogAction] = useState<'edit' | 'delete' | null>(null);
+  const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({
     page: 0,
     pageSize: 5,
   });
 
-  React.useEffect(() => {
-    getAllUsers().then(setUsers);
+  useEffect(() => {
+    fetchUsers();
   }, []);
 
+  const fetchUsers = async () => {
+    const data = await getAllUsers();
+    setUsers(data);
+  };
+
+  const handleOpenDialog = (user: UserData, action: 'edit' | 'delete') => {
+    setSelectedUser(user);
+    setDialogAction(action);
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+    setSelectedUser(null);
+    setDialogAction(null);
+  };
+
+  const handleConfirmAction = async () => {
+    if (dialogAction === 'delete' && selectedUser) {
+      await deleteUser(selectedUser.id); // Assume deleteUser is an API service function
+      if(users !== 'loading')
+        setUsers(users.filter((user) => user.id !== selectedUser.id))
+    } else if (dialogAction === 'edit' && selectedUser) {
+      await updateUser(selectedUser.id, selectedUser); // Call API with updated data
+      await fetchUsers(); // Refresh the list after update
+    }
+    handleCloseDialog();
+  };
+
   if (users === 'loading') return <TableSkeleton />;
+
+  const columnHeaders: GridColDef[] = [
+    { field: 'index', headerName: 'ردیف' },
+    { field: 'firstname', headerName: 'نام' },
+    { field: 'lastname', headerName: 'نام خانوادگی' },
+    { field: 'email', headerName: 'ایمیل', minWidth: 250 },
+    { field: 'gender', headerName: 'جنسیت' },
+    { field: 'age', headerName: 'سن' },
+    {
+      field: 'actions',
+      headerName: 'عملیات',
+      width: 100,
+      renderCell: (params) => (
+        <Box gap={1} sx={{ height: 1, display: 'flex', alignItems: 'center' }}>
+          <Button
+            variant="text"
+            color="primary"
+            sx={{ borderRadius: '50%', minWidth: 0, width: 30, height: 30, padding: 0 }}
+            onClick={() => handleOpenDialog(params.row, 'edit')}
+          >
+            <EditIcon />
+          </Button>
+          <Button
+            variant="text"
+            color="error"
+            sx={{ borderRadius: '50%', minWidth: 0, width: 30, height: 30, padding: 0 }}
+            onClick={() => handleOpenDialog(params.row, 'delete')}
+          >
+            <DeleteIcon />
+          </Button>
+        </Box>
+      ),
+      sortable: false,
+      filterable: false,
+    },
+  ];
 
   return (
     <Paper sx={{ maxHeight: 1, width: 1 }}>
@@ -114,6 +134,26 @@ export const UsersListContainer = () => {
         localeText={persianLocaleText}
         hideFooterSelectedRowCount
       />
+
+      {/* Confirmation Dialog */}
+      <Dialog open={openDialog} onClose={handleCloseDialog}>
+        <DialogTitle>{dialogAction === 'delete' ? 'تایید حذف' : 'ویرایش کاربر'}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            {dialogAction === 'delete'
+              ? `آیا مطمئن هستید که می‌خواهید کاربر ${selectedUser?.firstName} را حذف کنید؟`
+              : `آیا می‌خواهید اطلاعات کاربر ${selectedUser?.firstName} را ویرایش کنید؟`}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog} color="primary">
+            لغو
+          </Button>
+          <Button onClick={handleConfirmAction} color="primary" autoFocus>
+            {dialogAction === 'delete' ? 'حذف' : 'تایید'}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Paper>
   );
 };

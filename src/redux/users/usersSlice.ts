@@ -24,22 +24,22 @@ const initialState: UserState = {
   success: false,
 };
 
-const handlePending = (state: UserState) => {
-  state.loading = true;
-  state.error = null;
-};
+// const handlePending = (state: UserState) => {
+//   state.loading = true;
+//   state.error = null;
+// };
 
-const handleFulfilled = (state: UserState, action: PayloadAction<UserData[]>) => {
-  state.loading = false;
-  state.success = true;
-  state.usersData = action.payload;
-};
+// const handleFulfilled = (state: UserState, action: PayloadAction<UserData[]>) => {
+//   state.loading = false;
+//   state.success = true;
+//   state.usersData = action.payload;
+// };
 
-const handleRejected = (state: UserState, action: PayloadAction<string | undefined>) => {
-  state.loading = false;
-  state.error = action.payload || 'Unknown error';
-  state.success = false;
-};
+// const handleRejected = (state: UserState, action: PayloadAction<string | undefined>) => {
+//   state.loading = false;
+//   state.error = action.payload || 'Unknown error';
+//   state.success = false;
+// };
 
 export const usersSlice = createSlice({
   name: 'userSlice',
