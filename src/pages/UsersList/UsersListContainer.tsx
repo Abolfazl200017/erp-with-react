@@ -1,8 +1,7 @@
 import React from 'react';
-import { Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TableRow } from '@mui/material';
+import { Paper } from '@mui/material';
 import { getAllUsers } from '../../services/userServices';
-import CustomPagination from 'components/CustomPagination';
-import { styled } from '@mui/system';
+import { DataGrid, GridColDef, GridPaginationModel } from '@mui/x-data-grid';
 
 export type UserData = {
   id: number;
@@ -14,100 +13,66 @@ export type UserData = {
   age: number;
 };
 
-const columnHeaders = ['ردیف', 'نام', 'نام خانوادگی', 'ایمیل', 'جنسیت', 'سن'];
+const persianLocaleText = {
+  noRowsLabel: 'بدون داده',
+  columnMenuLabel: 'منوی ستون',
+  columnMenuSortAsc: 'مرتب سازی صعودی',
+  columnMenuSortDesc: 'مرتب سازی نزولی',
+  columnMenuFilter: 'فیلتر',
+  columnMenuHideColumn: 'مخفی کردن ستون',
+  columnMenuShowColumns: 'نمایش ستون‌ها',
+  footerRowSelected: count => `${count.toLocaleString()} سطر انتخاب شده`,
+  footerTotalVisibleRows: (visibleCount, totalCount) =>
+    `از ${totalCount.toLocaleString()}، ${visibleCount.toLocaleString()} سطر نشان داده شده`,
+  MuiTablePagination: {
+    labelRowsPerPage: 'تعداد ردیف در صفحه:',
+    labelDisplayedRows: ({ from, to, count }) =>
+      `${from}–${to} از ${count !== -1 ? count : `بیشتر از ${to}`}`,
+  },
+};
+
+const columnHeaders: GridColDef[] = [
+  { field: 'index', headerName: 'ردیف' },
+  { field: 'firstname', headerName: 'نام' },
+  { field: 'lastname', headerName: 'نام خانوادگی' },
+  { field: 'email', headerName: 'ایمیل', minWidth: 250 },
+  { field: 'gender', headerName: 'جنسیت' },
+  { field: 'age', headerName: 'سن' },
+];
 
 export const UsersListContainer = () => {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [users, setUsers] = React.useState<UserData[] | 'loading'>('loading');
+  const [paginationModel, setPaginationModel] = React.useState<GridPaginationModel>({
+    page: 0,
+    pageSize: 5,
+  });
 
   React.useEffect(() => {
     getAllUsers().then(setUsers);
   }, []);
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - users.length) : 0;
-
-  const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
   if (users === 'loading') return <div>loading please wait</div>;
 
   return (
-    <Root sx={{ maxWidth: 1000, width: 1, mx: 'auto' }}>
-      <TableContainer component={Paper} sx={{ maxWidth: 1, overflowX: 'auto'}}>
-        <Table aria-label="custom pagination table">
-          <TableHead>
-            <TableRow>
-              {columnHeaders.map((col) => (
-                <TableCell key={col}>
-                  {col}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {(rowsPerPage > 0 ? users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : users).map((user: UserData, index:number) => (
-              <TableRow key={user.id}>
-                <TableCell>{page*rowsPerPage + index + 1 }</TableCell>
-                <TableCell>{user.firstName}</TableCell>
-                <TableCell>{user.lastName}</TableCell>
-                <TableCell>{user.email}</TableCell>
-                <TableCell>{user.gender === 'male' ? 'آقا' : 'خانم'}</TableCell>
-                <TableCell>{user.age}</TableCell>
-              </TableRow>
-            ))}
-            {emptyRows > 0 && (
-              <TableRow style={{ height: 37 * emptyRows }}>
-                <TableCell colSpan={columnHeaders.length} aria-hidden />
-              </TableRow>
-            )}
-          </TableBody>
-          <TableFooter>
-            <TableRow>
-              <CustomPagination
-                rowsPerPageOptions={[5, 10, 25, { label: 'همه', value: -1 }]}
-                colSpan={columnHeaders.length}
-                count={users.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                slotProps={{
-                  select: { 'aria-label': 'rows per page' }
-                }}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-              />
-            </TableRow>
-          </TableFooter>
-        </Table>
-      </TableContainer>
-    </Root>
+    <Paper sx={{ maxHeight: 1, width: '100%' }}>
+      <DataGrid
+        rows={users.map((user, i) => ({
+          id: user.id,
+          index: i + 1,
+          firstname: user.firstName,
+          lastname: user.lastName,
+          email: user.email,
+          gender: user.gender,
+          age: user.age,
+        }))}
+        columns={columnHeaders}
+        pagination
+        paginationModel={paginationModel}
+        onPaginationModelChange={setPaginationModel}
+        pageSizeOptions={[5, 10, 20]}
+        localeText={persianLocaleText}
+        hideFooterSelectedRowCount
+      />
+    </Paper>
   );
 };
-
-const Root = styled('div')(
-  ({ theme }) => `
-  table {
-    font-family: 'IBM Plex Sans', sans-serif;
-    font-size: 0.875rem;
-    border-collapse: collapse;
-    width: 100%;
-  }
-
-  td,
-  th {
-    border: 1px solid ${theme.palette.mode === 'dark' ? theme.palette.grey[800] : theme.palette.grey[200]};
-    text-align: left;
-    padding: 8px;
-  }
-
-  th {
-    background-color: ${theme.palette.mode === 'dark' ? theme.palette.grey[900] : '#fff'};
-  }
-  `,
-);

@@ -10,6 +10,7 @@ import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
 import { prefixer } from 'stylis';
 import rtlPlugin from 'stylis-plugin-rtl';
+import { faIR } from '@mui/material/locale';
 
 declare module '@mui/material/styles' {
   interface Palette {
@@ -21,35 +22,38 @@ declare module '@mui/material/styles' {
   }
 }
 
-const theme = createTheme({
-  direction: 'rtl',
-  palette: {
-    mode: 'dark',
-    darkBG: {
-      main: "#0f1214",
-      contrastText: "#90caf9"
+const theme = createTheme(
+  {
+    direction: 'rtl',
+    palette: {
+      mode: 'dark',
+      darkBG: {
+        main: '#0f1214',
+        contrastText: '#90caf9',
+      },
+      darkCardBG: {
+        main: '#11171d',
+        contrastText: '#90caf9',
+      },
+      grey: {
+        50: '#F3F6F9',
+        100: '#E5EAF2',
+        200: '#DAE2ED',
+        300: '#C7D0DD',
+        400: '#B0B8C4',
+        500: '#9DA8B7',
+        600: '#6B7A90',
+        700: '#434D5B',
+        800: '#303740',
+        900: '#1C2025',
+      },
     },
-    darkCardBG: {
-      main: "#11171d",
-      contrastText: "#90caf9"
+    typography: {
+      fontFamily: ['Shabnam'].join(','),
     },
-    grey: {
-      50: '#F3F6F9',
-      100: '#E5EAF2',
-      200: '#DAE2ED',
-      300: '#C7D0DD',
-      400: '#B0B8C4',
-      500: '#9DA8B7',
-      600: '#6B7A90',
-      700: '#434D5B',
-      800: '#303740',
-      900: '#1C2025',
-    }
   },
-  typography: {
-    fontFamily: ['Shabnam'].join(','),
-  },
-});
+  faIR,
+);
 
 const cacheRtl = createCache({
   key: 'muirtl',
