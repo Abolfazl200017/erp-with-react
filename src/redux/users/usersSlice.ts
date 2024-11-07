@@ -41,7 +41,7 @@ const handleRejected = (state: UserState, action: PayloadAction<string | undefin
   state.success = false;
 };
 
-export const userSlice = createSlice({
+export const usersSlice = createSlice({
   name: 'userSlice',
   initialState,
   reducers: {
@@ -55,6 +55,6 @@ export const userSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { resetUserState } = userSlice.actions;
+export const { resetUserState } = usersSlice.actions;
 
-export default userSlice.reducer;
+export default usersSlice.reducer;
