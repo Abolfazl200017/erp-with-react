@@ -9,6 +9,8 @@ const MUIMain = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })
 }>(({ theme }) => ({
   flexGrow: 1,
   padding: theme.spacing(3),
+  maxWidth: 'calc(100vw + 264px)', // Set maxWidth
+  overflowX: 'auto',               // Enable horizontal scrolling
   transition: theme.transitions.create('margin', {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,

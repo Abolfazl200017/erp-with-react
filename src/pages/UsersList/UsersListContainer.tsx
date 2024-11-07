@@ -40,7 +40,7 @@ export const UsersListContainer = () => {
 
   return (
     <Root sx={{ maxWidth: 1000, width: 1, mx: 'auto' }}>
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} sx={{ maxWidth: 1, overflowX: 'auto'}}>
         <Table aria-label="custom pagination table">
           <TableHead>
             <TableRow>

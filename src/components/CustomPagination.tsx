@@ -4,8 +4,8 @@ import { styled } from '@mui/system';
 const CustomTablePagination = styled(TablePagination)`
   & .MuiTablePagination-toolbar {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+    // flex-direction: column;
+    // align-items: flex-start;
     gap: 10px;
 
     @media (min-width: 768px) {
