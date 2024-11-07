@@ -1,8 +1,10 @@
 import React from 'react';
-import { Paper } from '@mui/material';
+import { Box, Button, Paper } from '@mui/material';
 import { getAllUsers } from '../../services/userServices';
 import { DataGrid, GridColDef, GridPaginationModel } from '@mui/x-data-grid';
 import { TableSkeleton } from 'components/Skeleton';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 export type UserData = {
   id: number;
@@ -38,6 +40,45 @@ const columnHeaders: GridColDef[] = [
   { field: 'email', headerName: 'ایمیل', minWidth: 250 },
   { field: 'gender', headerName: 'جنسیت' },
   { field: 'age', headerName: 'سن' },
+  {
+    field: 'actions',
+    headerName: 'عملیات',
+    width: 100,
+    renderCell: (params) => (
+      <Box gap={1} sx={{ height: 1, display: 'flex', alignItems: 'center' }}>
+        <Button
+          variant="text"
+          color="primary"
+          sx={{
+            borderRadius: '50%',
+            minWidth: 0,
+            width: 30,
+            height: 30,
+            padding: 0,
+          }}
+          onClick={() => console.log(params.row, 'edit')}
+        >
+          <EditIcon />
+        </Button>
+        <Button
+          variant="text"
+          color="error"
+          sx={{
+            borderRadius: '50%',
+            minWidth: 0,
+            width: 30,
+            height: 30,
+            padding: 0,
+          }}
+          onClick={() => console.log(params.row, 'delete')}
+        >
+          <DeleteIcon />
+        </Button>
+      </Box>
+    ),
+    sortable: false,
+    filterable: false,
+  },
 ];
 
 export const UsersListContainer = () => {
@@ -51,8 +92,7 @@ export const UsersListContainer = () => {
     getAllUsers().then(setUsers);
   }, []);
 
-  if (users === 'loading')
-    return <TableSkeleton />;
+  if (users === 'loading') return <TableSkeleton />;
 
   return (
     <Paper sx={{ maxHeight: 1, width: 1 }}>
