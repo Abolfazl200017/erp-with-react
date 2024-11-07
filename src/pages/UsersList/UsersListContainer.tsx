@@ -1,17 +1,31 @@
-import * as React from 'react';
-import { styled } from '@mui/system';
-import { TablePagination, tablePaginationClasses as classes } from '@mui/material';
+import React from 'react';
+import { Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TableRow } from '@mui/material';
 import { getAllUsers } from '../../services/userServices';
+import CustomPagination from 'components/CustomPagination';
+import { styled } from '@mui/system';
+
+export type UserData = {
+  id: number;
+  username: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  gender: 'male' | 'female';
+  age: number;
+};
+
+const columnHeaders = ['ردیف', 'نام', 'نام خانوادگی', 'ایمیل', 'جنسیت', 'سن'];
 
 export const UsersListContainer = () => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [users, setUsers] = React.useState<UserData[] | 'loading'>('loading');
 
   React.useEffect(() => {
-    getAllUsers().then(console.log)
-  }, [])
-  // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+    getAllUsers().then(setUsers);
+  }, []);
+
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - users.length) : 0;
 
   const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
     setPage(newPage);
@@ -22,88 +36,58 @@ export const UsersListContainer = () => {
     setPage(0);
   };
 
+  if (users === 'loading') return <div>loading please wait</div>;
+
   return (
-    <Root sx={{ maxWidth: '100%', width: 500 }}>
-      <table aria-label="custom pagination table">
-        <thead>
-          <tr>
-            <th>Dessert</th>
-            <th>Calories</th>
-            <th>Fat</th>
-          </tr>
-        </thead>
-        <tbody>
-          {(rowsPerPage > 0 ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : rows).map((row) => (
-            <tr key={row.name}>
-              <td>{row.name}</td>
-              <td style={{ width: 160 }} align="right">
-                {row.calories}
-              </td>
-              <td style={{ width: 160 }} align="right">
-                {row.fat}
-              </td>
-            </tr>
-          ))}
-          {emptyRows > 0 && (
-            <tr style={{ height: 41 * emptyRows }}>
-              <td colSpan={3} aria-hidden />
-            </tr>
-          )}
-        </tbody>
-        <tfoot>
-          <tr>
-            <CustomTablePagination
-              rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-              colSpan={3}
-              count={rows.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              slotProps={{
-                select: {
-                  'aria-label': 'rows per page',
-                },
-              }}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-            />
-          </tr>
-        </tfoot>
-      </table>
+    <Root sx={{ maxWidth: 1000, width: 1, mx: 'auto' }}>
+      <TableContainer component={Paper}>
+        <Table aria-label="custom pagination table">
+          <TableHead>
+            <TableRow>
+              {columnHeaders.map((col) => (
+                <TableCell key={col}>
+                  {col}
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {(rowsPerPage > 0 ? users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : users).map((user: UserData, index:number) => (
+              <TableRow key={user.id}>
+                <TableCell>{page*rowsPerPage + index + 1 }</TableCell>
+                <TableCell>{user.firstName}</TableCell>
+                <TableCell>{user.lastName}</TableCell>
+                <TableCell>{user.email}</TableCell>
+                <TableCell>{user.gender === 'male' ? 'آقا' : 'خانم'}</TableCell>
+                <TableCell>{user.age}</TableCell>
+              </TableRow>
+            ))}
+            {emptyRows > 0 && (
+              <TableRow style={{ height: 37 * emptyRows }}>
+                <TableCell colSpan={columnHeaders.length} aria-hidden />
+              </TableRow>
+            )}
+          </TableBody>
+          <TableFooter>
+            <TableRow>
+              <CustomPagination
+                rowsPerPageOptions={[5, 10, 25, { label: 'همه', value: -1 }]}
+                colSpan={columnHeaders.length}
+                count={users.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                slotProps={{
+                  select: { 'aria-label': 'rows per page' }
+                }}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+              />
+            </TableRow>
+          </TableFooter>
+        </Table>
+      </TableContainer>
     </Root>
   );
-};
-
-function createData(name: string, calories: number, fat: number) {
-  return { name, calories, fat };
-}
-
-const rows = [
-  createData('Cupcake', 305, 3.7),
-  createData('Donut', 452, 25.0),
-  createData('Eclair', 262, 16.0),
-  createData('Frozen yoghurt', 159, 6.0),
-  createData('Gingerbread', 356, 16.0),
-  createData('Honeycomb', 408, 3.2),
-  createData('Ice cream sandwich', 237, 9.0),
-  createData('Jelly Bean', 375, 0.0),
-  createData('KitKat', 518, 26.0),
-  createData('Lollipop', 392, 0.2),
-  createData('Marshmallow', 318, 0),
-  createData('Nougat', 360, 19.0),
-  createData('Oreo', 437, 18.0),
-].sort((a, b) => (a.calories < b.calories ? -1 : 1));
-
-const grey = {
-  50: '#F3F6F9',
-  100: '#E5EAF2',
-  200: '#DAE2ED',
-  300: '#C7D0DD',
-  400: '#B0B8C4',
-  500: '#9DA8B7',
-  600: '#6B7A90',
-  700: '#434D5B',
-  800: '#303740',
-  900: '#1C2025',
 };
 
 const Root = styled('div')(
@@ -117,48 +101,13 @@ const Root = styled('div')(
 
   td,
   th {
-    border: 1px solid ${theme.palette.mode === 'dark' ? grey[800] : grey[200]};
+    border: 1px solid ${theme.palette.mode === 'dark' ? theme.palette.grey[800] : theme.palette.grey[200]};
     text-align: left;
     padding: 8px;
   }
 
   th {
-    background-color: ${theme.palette.mode === 'dark' ? grey[900] : '#fff'};
+    background-color: ${theme.palette.mode === 'dark' ? theme.palette.grey[900] : '#fff'};
   }
   `,
 );
-
-const CustomTablePagination = styled(TablePagination)`
-  & .${classes.toolbar} {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-
-    @media (min-width: 768px) {
-      flex-direction: row;
-      align-items: center;
-    }
-  }
-
-  & .${classes.selectLabel} {
-    margin: 0;
-  }
-
-  & .${classes.displayedRows} {
-    margin: 0;
-
-    @media (min-width: 768px) {
-      margin-left: auto;
-    }
-  }
-
-  & .${classes.spacer} {
-    display: none;
-  }
-
-  & .${classes.actions} {
-    display: flex;
-    gap: 0.25rem;
-  }
-`;
