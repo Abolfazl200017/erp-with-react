@@ -15,6 +15,7 @@ import { faIR } from '@mui/material/locale';
 declare module '@mui/material/styles' {
   interface Palette {
     darkBG: PaletteColor;
+    darkCardBG: PaletteColor;
   }
   interface PaletteOptions {
     darkBG?: PaletteColorOptions;
@@ -32,7 +33,7 @@ const theme = createTheme(
         contrastText: '#90caf9',
       },
       darkCardBG: {
-        main: '#11171d',
+        main: '#1e1e1e',
         contrastText: '#90caf9',
       },
       grey: {
