@@ -1,47 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Box,
-  Button,
-  Paper,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-} from '@mui/material';
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import { getAllUsers, deleteUser, updateUser } from '../../services/usersServices';
-import { DataGrid, GridColDef, GridPaginationModel } from '@mui/x-data-grid';
+import { GridColDef } from '@mui/x-data-grid';
 import { TableSkeleton } from 'components/Skeleton';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { UserData } from '../../redux/users/usersSlice';
-
-const persianLocaleText = {
-  noRowsLabel: 'بدون داده',
-  columnMenuLabel: 'منوی ستون',
-  columnMenuSortAsc: 'مرتب سازی صعودی',
-  columnMenuSortDesc: 'مرتب سازی نزولی',
-  columnMenuFilter: 'فیلتر',
-  columnMenuHideColumn: 'مخفی کردن ستون',
-  columnMenuShowColumns: 'نمایش ستون‌ها',
-  footerRowSelected: (count) => `${count.toLocaleString()} سطر انتخاب شده`,
-  footerTotalVisibleRows: (visibleCount, totalCount) =>
-    `از ${totalCount.toLocaleString()}، ${visibleCount.toLocaleString()} سطر نشان داده شده`,
-  MuiTablePagination: {
-    labelRowsPerPage: 'تعداد ردیف در صفحه:',
-    labelDisplayedRows: ({ from, to, count }) => `${from}–${to} از ${count !== -1 ? count : `بیشتر از ${to}`}`,
-  },
-};
+import CustomTableContainer from 'components/CustomTable';
 
 export const UsersListContainer = () => {
   const [users, setUsers] = useState<UserData[] | 'loading'>('loading');
   const [selectedUser, setSelectedUser] = useState<UserData | null>(null);
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogAction, setDialogAction] = useState<'edit' | 'delete' | null>(null);
-  const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({
-    page: 0,
-    pageSize: 5,
-  });
 
   useEffect(() => {
     fetchUsers();
@@ -64,13 +35,10 @@ export const UsersListContainer = () => {
     setDialogAction(null);
   };
 
-  const getTableHeight = () => paginationModel.pageSize <= users.length ? (paginationModel.pageSize *52 )+ 111 : 'auto'
-
   const handleConfirmAction = async () => {
     if (dialogAction === 'delete' && selectedUser) {
       await deleteUser(selectedUser.id); // Assume deleteUser is an API service function
-      if(users !== 'loading')
-        setUsers(users.filter((user) => user.id !== selectedUser.id))
+      if (users !== 'loading') setUsers(users.filter((user) => user.id !== selectedUser.id));
     } else if (dialogAction === 'edit' && selectedUser) {
       await updateUser(selectedUser.id, selectedUser); // Call API with updated data
       await fetchUsers(); // Refresh the list after update
@@ -91,6 +59,7 @@ export const UsersListContainer = () => {
       field: 'actions',
       headerName: 'عملیات',
       width: 100,
+      type: 'actions',
       renderCell: (params) => (
         <Box gap={1} sx={{ height: 1, display: 'flex', alignItems: 'center' }}>
           <Button
@@ -117,9 +86,9 @@ export const UsersListContainer = () => {
   ];
 
   return (
-    <Paper sx={{ maxHeight: 800, width: 1, height: getTableHeight() }}>
-      <DataGrid
-        rows={users.map((user, i) => ({
+    <>
+      <CustomTableContainer
+        list={users.map((user, i) => ({
           id: user.id,
           index: i + 1,
           firstname: user.firstName,
@@ -128,16 +97,8 @@ export const UsersListContainer = () => {
           gender: user.gender === 'male' ? 'آقا' : 'خانم',
           age: user.age,
         }))}
-        columns={columnHeaders}
-        pagination
-        paginationModel={paginationModel}
-        onPaginationModelChange={setPaginationModel}
-        pageSizeOptions={[5, 10, 20]}
-        localeText={persianLocaleText}
-        hideFooterSelectedRowCount
+        columnHeaders={columnHeaders}
       />
-
-      {/* Confirmation Dialog */}
       <Dialog open={openDialog} onClose={handleCloseDialog}>
         <DialogTitle>{dialogAction === 'delete' ? 'تایید حذف' : 'ویرایش کاربر'}</DialogTitle>
         <DialogContent>
@@ -156,6 +117,6 @@ export const UsersListContainer = () => {
           </Button>
         </DialogActions>
       </Dialog>
-    </Paper>
+    </>
   );
 };
