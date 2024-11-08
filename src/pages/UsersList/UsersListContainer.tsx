@@ -36,7 +36,6 @@ export const UsersListContainer = () => {
   const handleCloseDialog = () => {
     setOpenDialog(false);
     setSelectedUser(null);
-    setDialogAction(null);
   };
 
   const columnHeaders: GridColDef[] = [
@@ -87,13 +86,9 @@ export const UsersListContainer = () => {
       </Box>
       <CustomTableContainer
         list={users.map((user, i) => ({
-          id: user.id,
+          ...user,
           index: i + 1,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          email: user.email,
           gender: user.gender === 'male' ? 'آقا' : 'خانم',
-          age: user.age,
         }))}
         columnHeaders={columnHeaders}
       />

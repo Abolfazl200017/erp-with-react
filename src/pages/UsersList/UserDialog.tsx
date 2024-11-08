@@ -21,7 +21,7 @@ export type UserForm = {
     lastName: string;
     email: string;
     gender: 'male' | 'female',
-    age: 0,
+    age: number,
 }
 
 interface UserDialogProps {
@@ -50,7 +50,16 @@ const UserDialog: React.FC<UserDialogProps> = ({
 }) => {
   const enqueueSnackbar = useSnackbar();
 
-  const initialValues: UserForm = selectedUser as UserForm || {
+  const mapUserDataToUserForm = (user: UserData): UserForm => ({
+    username: user.username,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    email: user.email,
+    gender: user.gender,
+    age: user.age,
+  });
+  
+  const initialValues: UserForm = selectedUser ? mapUserDataToUserForm(selectedUser) : {
     username: '',
     firstName: '',
     lastName: '',
