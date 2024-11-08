@@ -64,6 +64,8 @@ export const UsersListContainer = () => {
     setDialogAction(null);
   };
 
+  const getTableHeight = () => paginationModel.pageSize <= users.length ? (paginationModel.pageSize *52 )+ 111 : 'auto'
+
   const handleConfirmAction = async () => {
     if (dialogAction === 'delete' && selectedUser) {
       await deleteUser(selectedUser.id); // Assume deleteUser is an API service function
@@ -115,7 +117,7 @@ export const UsersListContainer = () => {
   ];
 
   return (
-    <Paper sx={{ maxHeight: 1, width: 1 }}>
+    <Paper sx={{ maxHeight: 800, width: 1, height: getTableHeight() }}>
       <DataGrid
         rows={users.map((user, i) => ({
           id: user.id,
