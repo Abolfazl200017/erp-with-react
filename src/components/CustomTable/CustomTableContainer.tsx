@@ -1,6 +1,5 @@
 import { Paper } from "@mui/material";
 import { DataGrid, GridColDef, GridPaginationModel } from "@mui/x-data-grid";
-import { TableSkeleton } from "components/Skeleton";
 import * as React from "react";
 
 const persianLocaleText = {
@@ -21,7 +20,7 @@ const persianLocaleText = {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const CustomTableContainer = ({ list, columnHeaders }: { list: any[]|'loading', columnHeaders:GridColDef[] }) => {
+export const CustomTableContainer = ({ list, columnHeaders }: { list: any[], columnHeaders:GridColDef[] }) => {
   const [paginationModel, setPaginationModel] = React.useState<GridPaginationModel>({
     page: 0,
     pageSize: 5,
@@ -29,8 +28,6 @@ export const CustomTableContainer = ({ list, columnHeaders }: { list: any[]|'loa
 
   const getTableHeight = () => paginationModel.pageSize <= list.length ? (paginationModel.pageSize *52 )+ 111 : 'auto'
 
-
-  if (list === 'loading') return <TableSkeleton />;
 
   return (
     <Paper sx={{ maxHeight: 800, width: 1, height: getTableHeight() }}>
