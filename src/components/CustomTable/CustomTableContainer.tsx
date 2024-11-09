@@ -26,11 +26,15 @@ export const CustomTableContainer = ({ list, columnHeaders }: { list: any[], col
     pageSize: 5,
   });
 
-  const getTableHeight = () => paginationModel.pageSize <= list.length ? (paginationModel.pageSize *52 )+ 111 : 'auto'
-
+  const getTableHeight = () => paginationModel.pageSize <= list.length && paginationModel.page+1 >= list.length / paginationModel.pageSize ? (paginationModel.pageSize *52 )+ 111 : 200
+  
+  const getTableMinHeight = () => {
+    console.log((Math.min( paginationModel.pageSize, list.length) * 52) + 111)
+    return (Math.min( paginationModel.pageSize, list.length) * 52) + 111
+  }
 
   return (
-    <Paper sx={{ maxHeight: 800, width: 1, height: getTableHeight() }}>
+    <Paper sx={{ maxHeight: 800, width: 1, minHeight: getTableMinHeight(), height: getTableHeight() }}>
       <DataGrid
         rows={list}
         columns={columnHeaders}
