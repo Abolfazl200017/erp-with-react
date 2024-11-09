@@ -1,5 +1,5 @@
 // UserDialog.tsx
-import React from 'react';
+import * as React from 'react';
 import {
   Button,
   Dialog,
@@ -8,6 +8,8 @@ import {
   DialogTitle,
   TextField,
   MenuItem,
+  Box,
+  CircularProgress,
 } from '@mui/material';
 import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
@@ -16,18 +18,18 @@ import { addUser, updateUser, deleteUser } from '../../services/usersServices';
 import useSnackbar from '../../components/Snackbar/useSnackbar';
 
 export type UserForm = {
-    username: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    gender: 'male' | 'female',
-    age: number,
-}
+  username: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  gender: 'male' | 'female';
+  age: number;
+};
 
 interface UserDialogProps {
   open: boolean;
   onClose: () => void;
-  updateUsersState: (type: 'add' | 'delete' | 'edit', value:UserData) => void; // Callback to refresh the user list
+  updateUsersState: (type: 'add' | 'delete' | 'edit', value: UserData) => void; // Callback to refresh the user list
   dialogAction: 'add' | 'edit' | 'delete' | null;
   selectedUser?: UserData | null;
 }
@@ -41,13 +43,8 @@ const validationSchema = Yup.object({
   age: Yup.number().min(0, 'سن باید مثبت باشد').required('سن الزامی است'),
 });
 
-const UserDialog: React.FC<UserDialogProps> = ({
-  open,
-  onClose,
-  updateUsersState,
-  dialogAction,
-  selectedUser,
-}) => {
+const UserDialog: React.FC<UserDialogProps> = ({ open, onClose, updateUsersState, dialogAction, selectedUser }) => {
+  const [loading, setLoading] = React.useState(false);
   const enqueueSnackbar = useSnackbar();
 
   const mapUserDataToUserForm = (user: UserData): UserForm => ({
@@ -58,33 +55,39 @@ const UserDialog: React.FC<UserDialogProps> = ({
     gender: user.gender,
     age: user.age,
   });
-  
-  const initialValues: UserForm = selectedUser ? mapUserDataToUserForm(selectedUser) : {
-    username: '',
-    firstName: '',
-    lastName: '',
-    email: '',
-    gender: 'male',
-    age: 0,
-  };
 
-  const handleSubmit = async (values: UserForm|null) => {
+  const initialValues: UserForm = selectedUser
+    ? mapUserDataToUserForm(selectedUser)
+    : {
+        username: '',
+        firstName: '',
+        lastName: '',
+        email: '',
+        gender: 'male',
+        age: 0,
+      };
+
+  const handleSubmit = async (values: UserForm | null) => {
+    if (loading) return;
+    else setLoading(true);
     try {
       if (dialogAction === 'add') {
         const response = await addUser(values);
         enqueueSnackbar('کاربر جدید با موفقیت اضافه شد', { variant: 'success' });
-        updateUsersState(dialogAction, response as UserData)
+        updateUsersState(dialogAction, response as UserData);
       } else if (dialogAction === 'edit' && selectedUser) {
         const response = await updateUser(selectedUser.id, values);
         enqueueSnackbar('کاربر با موفقیت ویرایش شد', { variant: 'success' });
-        updateUsersState(dialogAction, response as UserData)
+        updateUsersState(dialogAction, response as UserData);
       } else if (dialogAction === 'delete' && selectedUser) {
         await deleteUser(selectedUser.id);
         enqueueSnackbar('کاربر با موفقیت حذف شد', { variant: 'success' });
-        updateUsersState(dialogAction, selectedUser)
+        updateUsersState(dialogAction, selectedUser);
       }
+      setLoading(false);
       onClose();
     } catch {
+      setLoading(false);
       enqueueSnackbar('خطا در عملیات. لطفا دوباره تلاش کنید', { variant: 'error' });
     }
   };
@@ -94,25 +97,39 @@ const UserDialog: React.FC<UserDialogProps> = ({
       <DialogTitle>
         {dialogAction === 'add' ? 'افزودن کاربر جدید' : dialogAction === 'edit' ? 'ویرایش کاربر' : 'حذف کاربر'}
       </DialogTitle>
+      {loading && (
+        <Box
+          sx={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            bgcolor: 'rgba(0, 0, 0, 0.5)',
+            zIndex: 1300,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <CircularProgress color="inherit" />
+        </Box>
+      )}
       {dialogAction === 'delete' ? (
         <DialogContent>
           <p>آیا مطمئن هستید که می‌خواهید کاربر {selectedUser?.firstName} را حذف کنید؟</p>
           <DialogActions>
-                  <Button onClick={onClose} sx={{ color: 'white'}}>
-                    لغو
-                  </Button>
-                  <Button type="submit" color="error" onClick={() => handleSubmit(null)}>
-                    حذف
-                  </Button>
-                </DialogActions>
+            <Button onClick={onClose} sx={{ color: 'white' }}>
+              لغو
+            </Button>
+            <Button type="submit" color="error" onClick={() => handleSubmit(null)}>
+              حذف
+            </Button>
+          </DialogActions>
         </DialogContent>
       ) : (
         <DialogContent>
-          <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={handleSubmit}
-          >
+          <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
             {({ touched, errors, handleChange, isSubmitting }) => (
               <Form>
                 <Field

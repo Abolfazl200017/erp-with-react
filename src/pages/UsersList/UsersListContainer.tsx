@@ -29,18 +29,16 @@ export const UsersListContainer = () => {
 
   const updateUsersState = (type: 'add' | 'delete' | 'edit', value: UserData) => {
     switch (type) {
-      case "add":
-        setUsers(users === 'loading' ? [ { ...value }] : [ ...users, { ...value }])
-        break
-      case "edit":
-        if(users !== 'loading')
-          setUsers(users.map(user => user.id === value.id ? value : user))
-          break
-      case "delete":
-        if(users !== 'loading')
-          setUsers(users.filter((user) => user.id!=value.id))
+      case 'add':
+        setUsers(users === 'loading' ? [{ ...value }] : [...users, { ...{ ...value, id: users.findIndex((user) => user.id === value.id ) > -1 ? users.length + 1 : value.id } }]);
+        break;
+      case 'edit':
+        if (users !== 'loading') setUsers(users.map((user) => (user.id === value.id ? value : user)));
+        break;
+      case 'delete':
+        if (users !== 'loading') setUsers(users.filter((user) => user.id != value.id));
     }
-  }
+  };
 
   const handleOpenDialog = (user: UserData | null, action: 'add' | 'edit' | 'delete') => {
     setSelectedUser(user);
@@ -71,7 +69,9 @@ export const UsersListContainer = () => {
             variant="text"
             color="primary"
             sx={{ borderRadius: '50%', minWidth: 0, width: 30, height: 30, padding: 0 }}
-            onClick={() => handleOpenDialog({ ...params.row, gender: params.row === 'آقا' ? 'male' : 'female'}, 'edit')}
+            onClick={() =>
+              handleOpenDialog({ ...params.row, gender: params.row === 'آقا' ? 'male' : 'female' }, 'edit')
+            }
           >
             <EditIcon />
           </Button>
