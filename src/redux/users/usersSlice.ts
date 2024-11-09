@@ -1,4 +1,4 @@
-import { ActionReducerMapBuilder, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 export type UserData = {
   id: number;
@@ -49,8 +49,6 @@ export const usersSlice = createSlice({
       state.usersData = null;
       state.success = false;
     },
-  },
-  extraReducers: (builder: ActionReducerMapBuilder<UserState>) => {
   },
 });
 

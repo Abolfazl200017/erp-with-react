@@ -2,7 +2,7 @@ import CustomTableContainer from 'components/CustomTable';
 import UserDialog from './UserDialog';
 import { Box, Button } from '@mui/material';
 
-function UsersListView({
+function UsersView({
   users,
   selectedUser,
   updateUsersState,
@@ -38,4 +38,4 @@ function UsersListView({
   );
 }
 
-export default UsersListView;
+export default UsersView;

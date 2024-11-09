@@ -4,14 +4,14 @@ import ServerError from 'pages/error/ServerError';
 import NotFound from 'pages/error/NotFound';
 import Home from 'pages/Home';
 import MainLayout from 'layouts/MainLayout';
-import UsersListContainer from 'pages/UsersList';
+import UsersContainer from 'pages/Users';
 
 export const RouterConfig = () => {
   return (
     <Routes>
       <Route path="/" element={<MainLayout />}>
         <Route path={HOME} element={<Home />} />
-        <Route path="/users" element={<UsersListContainer />} />
+        <Route path="/users" element={<UsersContainer />} />
         <Route path="/users/:id" element={<div>single user worksdd</div>} />
         <Route path="/article" element={<div>articles list works!</div>} />
       </Route>

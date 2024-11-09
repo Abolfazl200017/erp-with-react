@@ -1,4 +1,4 @@
-// UsersListContainer.tsx
+// UsersContainer.tsx
 import React, { useState, useEffect } from 'react';
 import { Box, Button } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
@@ -8,9 +8,9 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { UserData } from '../../redux/users/usersSlice';
 
 import { getAllUsers } from '../../services/usersServices';
-import UsersListView from './UsersListView';
+import UsersView from './UsersView';
 
-export const UsersListContainer = () => {
+export const UsersContainer = () => {
   const [users, setUsers] = useState<UserData[] | 'loading'>('loading');
   const [selectedUser, setSelectedUser] = useState<UserData | null>(null);
   const [openDialog, setOpenDialog] = useState(false);
@@ -92,6 +92,6 @@ export const UsersListContainer = () => {
   if (users === 'loading') return <TableSkeleton />;
 
   return (
-    <UsersListView users={users} selectedUser={selectedUser} updateUsersState={updateUsersState} handleOpenDialog={handleOpenDialog} handleCloseDialog={handleCloseDialog} openDialog={openDialog} dialogAction={dialogAction} columnHeaders={columnHeaders} />
+    <UsersView users={users} selectedUser={selectedUser} updateUsersState={updateUsersState} handleOpenDialog={handleOpenDialog} handleCloseDialog={handleCloseDialog} openDialog={openDialog} dialogAction={dialogAction} columnHeaders={columnHeaders} />
   );
 };
