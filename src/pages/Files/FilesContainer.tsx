@@ -4,32 +4,32 @@ import { useDropzone, Accept } from 'react-dropzone';
 import CloseIcon from '@mui/icons-material/Close';
 
 export const FilesContainer = () => {
-    const [images, setImages] = useState([]);
+  const [images, setImages] = useState([]);
 
-    const onDrop = (acceptedFiles) => {
-      const newImages = acceptedFiles.map((file) => ({
-        id: URL.createObjectURL(file),
-        file,
-      }));
-      setImages((prevImages) => [...prevImages, ...newImages]);
+  const onDrop = (acceptedFiles) => {
+    const newImages = acceptedFiles.map((file) => ({
+      id: URL.createObjectURL(file),
+      file,
+    }));
+    setImages((prevImages) => [...prevImages, ...newImages]);
+  };
+
+  const handleDeleteImage = (id) => {
+    setImages((prevImages) => prevImages.filter((img) => img.id !== id));
+    URL.revokeObjectURL(id); // Clean up URL object
+  };
+
+  const accept: Accept = { 'image/*': [] };
+  const { getRootProps, getInputProps } = useDropzone({
+    accept,
+    onDrop,
+  });
+
+  useEffect(() => {
+    return () => {
+      images.forEach((img) => URL.revokeObjectURL(img.id));
     };
-  
-    const handleDeleteImage = (id) => {
-      setImages((prevImages) => prevImages.filter((img) => img.id !== id));
-      URL.revokeObjectURL(id); // Clean up URL object
-    };
-  
-    const accept: Accept = { 'image/*': [] };
-    const { getRootProps, getInputProps } = useDropzone({
-      accept,
-      onDrop,
-    });
-  
-    useEffect(() => {
-      return () => {
-        images.forEach((img) => URL.revokeObjectURL(img.id));
-      };
-    }, [images]);
+  }, [images]);
 
   return (
     <Box>
@@ -102,6 +102,6 @@ export const FilesContainer = () => {
       </Box>
     </Box>
   );
-}
+};
 
 export default FilesContainer;

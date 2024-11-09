@@ -3,6 +3,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import { Box, IconButton, styled, Typography } from '@mui/material';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
+import { Link as RouterLink } from 'react-router-dom';
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
@@ -44,14 +45,18 @@ function Header({ handleDrawerOpen, open }) {
           >
             <MenuIcon />
           </IconButton>
-          <Box sx={{ height: '4rem', py: 2, mr: 1 }}>
-            <Box component="img" src="/images/logo.webp" sx={{ height: '100%', aspectRatio: '1 / 1' }} />
-          </Box>
-          <Typography variant="h6" noWrap component="div" sx={{ fontWeight: 'bold' }}>
-            {WEBSITE_TITLE}
-          </Typography>
+          <RouterLink to="/">
+            <Box sx={{ display: 'flex', alignItems: 'center', textDecoration: 'none', color: 'white' }}>
+              <Box sx={{ height: '4rem', py: 2, mr: 1 }}>
+                <Box component="img" src="/images/logo.webp" sx={{ height: '100%', aspectRatio: '1 / 1' }} />
+              </Box>
+              <Typography variant="h6" noWrap component="div" sx={{ fontWeight: 'bold' }}>
+                {WEBSITE_TITLE}
+              </Typography>
+            </Box>
+          </RouterLink>
         </Box>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>  </Box>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}> </Box>
       </Toolbar>
     </AppBar>
   );
