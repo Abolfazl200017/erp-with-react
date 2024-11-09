@@ -1,14 +1,13 @@
-import { Box } from '@mui/material';
-import { todoListHome } from '../../assets/image';
+import { Container } from "@mui/material"
+import { UsersAge } from "./UsersAge"
+import { ViewCount } from "./ViewCount"
 
 export const HomeContainer = () => {
+
   return (
-    <Box
-      sx={{ marginY: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}
-    >
-      <Box sx={{ width: '75%' }}>
-        <Box component="img" src={todoListHome} alt="todo-list" sx={{ width: '100%' }} />
-      </Box>
-    </Box>
-  );
-};
+    <Container maxWidth='lg'>
+      <UsersAge />
+      <ViewCount />
+    </Container>
+  )
+}
