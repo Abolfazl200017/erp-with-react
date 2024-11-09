@@ -49,7 +49,7 @@ export const FilesContainer = () => {
           cursor: 'pointer',
         }}
       >
-        <input {...getInputProps()} />
+        <input data-testid="dropzone" {...getInputProps()} />
         <Typography>فایل خود را اینجا بارگزاری نمایید</Typography>
       </Box>
 
