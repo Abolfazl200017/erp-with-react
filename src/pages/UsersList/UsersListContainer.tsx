@@ -1,7 +1,6 @@
 // UsersListContainer.tsx
 import React, { useState, useEffect } from 'react';
 import { Box, Button } from '@mui/material';
-import { getAllUsers } from '../../services/usersServices';
 import { GridColDef } from '@mui/x-data-grid';
 import { TableSkeleton } from 'components/Skeleton';
 import EditIcon from '@mui/icons-material/Edit';
@@ -10,6 +9,7 @@ import { UserData } from '../../redux/users/usersSlice';
 import CustomTableContainer from 'components/CustomTable';
 // import useSnackbar from '../../components/Snackbar/useSnackbar';
 import UserDialog from './UserDialog';
+import { getAllUsers } from '../../services/usersServices';
 
 export const UsersListContainer = () => {
   const [users, setUsers] = useState<UserData[] | 'loading'>('loading');
@@ -26,6 +26,21 @@ export const UsersListContainer = () => {
     const data = await getAllUsers();
     setUsers(data);
   };
+
+  const updateUsersState = (type: 'add' | 'delete' | 'edit', value: UserData) => {
+    switch (type) {
+      case "add":
+        setUsers(users === 'loading' ? [ { ...value }] : [ ...users, { ...value }])
+        break
+      case "edit":
+        if(users !== 'loading')
+          setUsers(users.map(user => user.id === value.id ? value : user))
+          break
+      case "delete":
+        if(users !== 'loading')
+          setUsers(users.filter((user) => user.id!=value.id))
+    }
+  }
 
   const handleOpenDialog = (user: UserData | null, action: 'add' | 'edit' | 'delete') => {
     setSelectedUser(user);
@@ -95,7 +110,7 @@ export const UsersListContainer = () => {
       <UserDialog
         open={openDialog}
         onClose={handleCloseDialog}
-        onUserModified={fetchUsers}
+        updateUsersState={updateUsersState}
         dialogAction={dialogAction}
         selectedUser={selectedUser}
       />

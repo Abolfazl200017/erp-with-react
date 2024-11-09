@@ -27,7 +27,7 @@ export type UserForm = {
 interface UserDialogProps {
   open: boolean;
   onClose: () => void;
-  onUserModified: () => void; // Callback to refresh the user list
+  updateUsersState: (type: 'add' | 'delete' | 'edit', value:UserData) => void; // Callback to refresh the user list
   dialogAction: 'add' | 'edit' | 'delete' | null;
   selectedUser?: UserData | null;
 }
@@ -44,7 +44,7 @@ const validationSchema = Yup.object({
 const UserDialog: React.FC<UserDialogProps> = ({
   open,
   onClose,
-  onUserModified,
+  updateUsersState,
   dialogAction,
   selectedUser,
 }) => {
@@ -71,16 +71,18 @@ const UserDialog: React.FC<UserDialogProps> = ({
   const handleSubmit = async (values: UserForm|null) => {
     try {
       if (dialogAction === 'add') {
-        await addUser(values);
+        const response = await addUser(values);
         enqueueSnackbar('کاربر جدید با موفقیت اضافه شد', { variant: 'success' });
+        updateUsersState(dialogAction, response as UserData)
       } else if (dialogAction === 'edit' && selectedUser) {
-        await updateUser(selectedUser.id, values);
+        const response = await updateUser(selectedUser.id, values);
         enqueueSnackbar('کاربر با موفقیت ویرایش شد', { variant: 'success' });
+        updateUsersState(dialogAction, response as UserData)
       } else if (dialogAction === 'delete' && selectedUser) {
         await deleteUser(selectedUser.id);
         enqueueSnackbar('کاربر با موفقیت حذف شد', { variant: 'success' });
+        updateUsersState(dialogAction, selectedUser)
       }
-      onUserModified();
       onClose();
     } catch {
       enqueueSnackbar('خطا در عملیات. لطفا دوباره تلاش کنید', { variant: 'error' });
