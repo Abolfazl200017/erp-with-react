@@ -13,6 +13,14 @@ describe('articleService', () => {
     { id: 2, title: 'Test Article 2', content: 'Content 2', author: 'Author 2' },
   ];
 
+  beforeAll(() => {
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+  });
+  
+  afterAll(() => {
+    jest.restoreAllMocks();
+  });
+  
   afterEach(() => {
     jest.clearAllMocks();
   });

@@ -13,6 +13,14 @@ describe('userService', () => {
     { id: 2, username: 'user2', firstName: 'Jane', lastName: 'Doe', email: 'jane@example.com', gender: 'female', age: 30 },
   ];
 
+  beforeAll(() => {
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+  });
+  
+  afterAll(() => {
+    jest.restoreAllMocks();
+  });
+
   afterEach(() => {
     jest.clearAllMocks();
   });

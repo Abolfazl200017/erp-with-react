@@ -35,5 +35,5 @@
   },
   "include": [
     "src"
-  ]
+, "src/__tests__/components/Articles"  ]
 }
