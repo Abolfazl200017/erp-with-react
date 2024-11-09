@@ -1,16 +1,15 @@
 import * as React from 'react';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
+import { Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
 import { addArticle, updateArticle, deleteArticle } from '../../services/articlesService';
 import { Article } from './ArticlesContainer';
 
 export type ArticleForm = {
-    title: string;
-    content: string;
-    author: string;
-    date: string;
-}
+  title: string;
+  content: string;
+  author: string;
+};
 
 interface ArticleDialogProps {
   open: boolean;
@@ -24,7 +23,6 @@ const validationSchema = Yup.object({
   title: Yup.string().required('عنوان الزامی است'),
   content: Yup.string().required('محتوا الزامی است'),
   author: Yup.string().required('نویسنده الزامی است'),
-  date: Yup.string().required('تاریخ الزامی است'),
 });
 
 const ArticleDialog: React.FC<ArticleDialogProps> = ({
@@ -34,15 +32,17 @@ const ArticleDialog: React.FC<ArticleDialogProps> = ({
   dialogAction,
   selectedArticle,
 }) => {
-  const initialValues: Article = selectedArticle || {
-    id: 0,
+  const [loading, setLoading] = React.useState(false);
+
+  const initialValues: ArticleForm = selectedArticle || {
     title: '',
     content: '',
     author: '',
-    date: '',
   };
 
   const handleSubmit = async (values: Article) => {
+    if (loading) return;
+    else setLoading(true);
     try {
       if (dialogAction === 'add') {
         const response = await addArticle(values);
@@ -54,9 +54,10 @@ const ArticleDialog: React.FC<ArticleDialogProps> = ({
         await deleteArticle(selectedArticle!.id);
         updateArticlesState('delete', selectedArticle!);
       }
-      onClose();
+      setLoading(false);
     } catch (error) {
       console.error('Error:', error);
+      setLoading(false);
     }
   };
 
@@ -65,21 +66,83 @@ const ArticleDialog: React.FC<ArticleDialogProps> = ({
       <DialogTitle>
         {dialogAction === 'add' ? 'افزودن مقاله جدید' : dialogAction === 'edit' ? 'ویرایش مقاله' : 'حذف مقاله'}
       </DialogTitle>
+      {loading && (
+        <Box
+          sx={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            bgcolor: 'rgba(0, 0, 0, 0.5)',
+            zIndex: 1300,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <CircularProgress color="inherit" />
+        </Box>
+      )}
       <DialogContent>
-        <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
-          {({ errors }) => (
-            <Form>
-              <Field as={TextField} name="title" label="عنوان" fullWidth margin="normal" error={Boolean(errors.title)} helperText={errors.title} />
-              <Field as={TextField} name="content" label="محتوا" fullWidth margin="normal" multiline rows={4} error={Boolean(errors.content)} helperText={errors.content} />
-              <Field as={TextField} name="author" label="نویسنده" fullWidth margin="normal" error={Boolean(errors.author)} helperText={errors.author} />
-              <Field as={TextField} name="date" label="تاریخ" fullWidth margin="normal" error={Boolean(errors.date)} helperText={errors.date} />
-              <DialogActions>
-                <Button onClick={onClose} color="secondary">لغو</Button>
-                <Button type="submit" color="primary">تایید</Button>
-              </DialogActions>
-            </Form>
-          )}
-        </Formik>
+        {dialogAction === 'delete' ? (
+          <>
+            <Box>آیا از حذف مقاله {selectedArticle?.title} مطمئن هستید؟</Box>
+            <DialogActions>
+              <Button onClick={onClose} sx={{ color: 'white' }}>
+                لغو
+              </Button>
+              <Button onClick={() => handleSubmit(null)} color="error">
+                تایید
+              </Button>
+            </DialogActions>
+          </>
+        ) : (
+          <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
+            {({ errors }) => (
+              <Form>
+                <Field
+                  as={TextField}
+                  name="title"
+                  label="عنوان"
+                  fullWidth
+                  margin="normal"
+                  error={Boolean(errors.title)}
+                  helperText={errors.title}
+                />
+                <Field
+                  as={TextField}
+                  name="content"
+                  label="محتوا"
+                  fullWidth
+                  margin="normal"
+                  multiline
+                  rows={4}
+                  error={Boolean(errors.content)}
+                  helperText={errors.content}
+                />
+                <Field
+                  as={TextField}
+                  name="author"
+                  label="نویسنده"
+                  fullWidth
+                  margin="normal"
+                  error={Boolean(errors.author)}
+                  helperText={errors.author}
+                />
+
+                <DialogActions>
+                  <Button onClick={onClose} color="secondary">
+                    لغو
+                  </Button>
+                  <Button type="submit" color="primary">
+                    تایید
+                  </Button>
+                </DialogActions>
+              </Form>
+            )}
+          </Formik>
+        )}
       </DialogContent>
     </Dialog>
   );

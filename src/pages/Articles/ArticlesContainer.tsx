@@ -4,14 +4,15 @@ import { GridColDef } from '@mui/x-data-grid';
 import { TableSkeleton } from 'components/Skeleton';
 import ArticlesView from './ArticlesView';
 import { getAllArticles } from '../../services/articlesService';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 export type Article = {
-    id: number;
-    title: string;
-    content: string;
-    author: string;
-    date: string;
-}
+  id: number;
+  title: string;
+  content: string;
+  author: string;
+};
 
 export const ArticlesContainer = () => {
   const [articles, setArticles] = useState<Article[] | 'loading'>('loading');
@@ -30,6 +31,7 @@ export const ArticlesContainer = () => {
 
   const updateArticlesState = (type: 'add' | 'delete' | 'edit', value: Article) => {
     if (articles === 'loading') return;
+    handleCloseDialog()
     switch (type) {
       case 'add':
         setArticles([...articles, value]);
@@ -40,7 +42,7 @@ export const ArticlesContainer = () => {
       case 'delete':
         setArticles(articles.filter(article => article.id !== value.id));
         break;
-    }
+      }
   };
 
   const handleOpenDialog = (article: Article | null, action: 'add' | 'edit' | 'delete') => {
@@ -55,20 +57,43 @@ export const ArticlesContainer = () => {
   };
 
   const columnHeaders: GridColDef[] = [
-    { field: 'title', headerName: 'عنوان' },
-    { field: 'author', headerName: 'نویسنده' },
-    { field: 'date', headerName: 'تاریخ' },
+    { field: 'title', headerName: 'عنوان', width: 150 },
+    { field: 'author', headerName: 'نویسنده', width: 120 },
+    {
+      field: 'content',
+      headerName: 'خلاصه محتوا',
+      width: 200,
+      renderCell: (params) => (
+        <span>{params.row.content.slice(0, 50)}...</span> // Show a short preview
+      ),
+    },
     {
       field: 'actions',
       headerName: 'عملیات',
       width: 100,
+      type: 'actions',
       renderCell: (params) => (
-        <Box>
-          <Button onClick={() => handleOpenDialog(params.row, 'edit')}>Edit</Button>
-          <Button onClick={() => handleOpenDialog(params.row, 'delete')}>Delete</Button>
+        <Box gap={1} sx={{ height: 1, display: 'flex', alignItems: 'center' }}>
+          <Button
+            variant="text"
+            color="primary"
+            sx={{ borderRadius: '50%', minWidth: 0, width: 30, height: 30, padding: 0 }}
+            onClick={() => handleOpenDialog(params.row, 'edit')}
+          >
+            <EditIcon />
+          </Button>
+          <Button
+            variant="text"
+            color="error"
+            sx={{ borderRadius: '50%', minWidth: 0, width: 30, height: 30, padding: 0 }}
+            onClick={() => handleOpenDialog(params.row, 'delete')}
+          >
+            <DeleteIcon />
+          </Button>
         </Box>
       ),
       sortable: false,
+      filterable: false,
     },
   ];
 

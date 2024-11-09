@@ -1,7 +1,7 @@
-// ArticlesView.tsx
+import React from 'react';
+import { Box, Button } from '@mui/material';
 import CustomTableContainer from 'components/CustomTable';
 import ArticleDialog from './ArticleDialog';
-import { Box, Button } from '@mui/material';
 import { Article } from './ArticlesContainer';
 import { GridColDef } from '@mui/x-data-grid';
 
@@ -16,7 +16,7 @@ interface ArticlesViewProps {
   columnHeaders: GridColDef[];
 }
 
-function ArticlesView({
+const ArticlesView: React.FC<ArticlesViewProps> = ({
   articles,
   selectedArticle,
   updateArticlesState,
@@ -25,7 +25,7 @@ function ArticlesView({
   openDialog,
   dialogAction,
   columnHeaders,
-}: ArticlesViewProps) {
+}) => {
   return (
     <Box>
       <Box sx={{ width: 1, display: 'flex', mb: 1 }}>
@@ -43,6 +43,6 @@ function ArticlesView({
       />
     </Box>
   );
-}
+};
 
 export default ArticlesView;
