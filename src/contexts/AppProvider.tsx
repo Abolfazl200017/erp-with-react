@@ -1,9 +1,5 @@
 import SnackbarProvider from 'components/Snackbar/SnackbarProvider';
 
-//redux
-import { Provider } from 'react-redux';
-import { store } from '../redux/store';
-
 //mui & mui theme
 import { createTheme, PaletteColor, PaletteColorOptions, ThemeProvider } from '@mui/material/styles';
 import { CacheProvider } from '@emotion/react';
@@ -62,13 +58,11 @@ const cacheRtl = createCache({
 });
 
 const AppProviders = ({ children }) => (
-  <Provider store={store}>
-    <CacheProvider value={cacheRtl}>
-      <ThemeProvider theme={theme}>
-        <SnackbarProvider>{children}</SnackbarProvider>
-      </ThemeProvider>
-    </CacheProvider>
-  </Provider>
+  <CacheProvider value={cacheRtl}>
+    <ThemeProvider theme={theme}>
+      <SnackbarProvider>{children}</SnackbarProvider>
+    </ThemeProvider>
+  </CacheProvider>
 );
 
 export default AppProviders;
