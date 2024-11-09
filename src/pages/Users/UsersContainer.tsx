@@ -5,10 +5,19 @@ import { GridColDef } from '@mui/x-data-grid';
 import { TableSkeleton } from 'components/Skeleton';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { UserData } from '../../redux/users/usersSlice';
 
 import { getAllUsers } from '../../services/usersServices';
 import UsersView from './UsersView';
+
+export type UserData = {
+  id: number;
+  username: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  gender: 'male' | 'female';
+  age: number;
+};
 
 export const UsersContainer = () => {
   const [users, setUsers] = useState<UserData[] | 'loading'>('loading');

@@ -1,33 +1,33 @@
 import { SYSTEM_ERROR } from 'config/CONSTANT';
 import axios from './axiosInstance';
-import { ADD_USER, DELETE_USER, GET_ALL_USERS, PATCH_USER } from './CONSTANT';
-import { UserForm } from '../pages/Users/UserDialog';
-import { UserData } from 'pages/Users/UsersContainer';
+import { ADD_ARTICLE, DELETE_ARTICLE, GET_ALL_ARTICLES, PATCH_ARTICLE } from './CONSTANT';
+import { Article } from 'pages/Articles/ArticlesContainer';
+import { ArticleForm } from 'pages/Articles/ArticleDialog';
 
-export const getAllUsers = () => {
-  return new Promise<UserData[]>((resolve, reject) => {
+export const getAllArticles = () => {
+  return new Promise<Article[]>((resolve, reject) => {
     try {
       axios
-        .get(GET_ALL_USERS)
+        .get(GET_ALL_ARTICLES)
         .then((res) => {
           resolve(res.data);
         })
         .catch((err) => {
-          console.log('getAllUsers > axios err=', err);
-          reject({ ...err, message: `Error in getAllUsers axios! ${err.message}` });
+          console.log('getAllArticles > axios err=', err);
+          reject({ ...err, message: `Error in getAllArticles axios! ${err.message}` });
         });
     } catch (error) {
-      console.error('in userServices > getAllUsers, Err===', error);
+      console.error('in userServices > getAllArticles, Err===', error);
       reject(SYSTEM_ERROR);
     }
   });
 };
 
-export const deleteUser = (id:number) => {
+export const deleteArticle = (id:number) => {
   return new Promise((resolve, reject) => {
     try {
       axios
-        .delete(`${DELETE_USER}${id}`)
+        .delete(`${DELETE_ARTICLE}${id}`)
         .then((res) => {
           resolve(res.data);
         })
@@ -41,12 +41,12 @@ export const deleteUser = (id:number) => {
   });
 };
 
-export const updateUser = (id:number, updatedData: UserForm) => {
+export const updateArticle = (id:number, updatedData: ArticleForm) => {
   return new Promise((resolve, reject) => {
     try {
       axios
         .patch(
-          `${PATCH_USER}${id}`,
+          `${PATCH_ARTICLE}${id}`,
           updatedData,
         )
         .then((res) => {
@@ -62,12 +62,12 @@ export const updateUser = (id:number, updatedData: UserForm) => {
   });
 };
 
-export const addUser = (updatedData: UserForm) => {
+export const addArticle = (updatedData: ArticleForm) => {
   return new Promise((resolve, reject) => {
     try {
       axios
         .post(
-          ADD_USER,
+          ADD_ARTICLE,
           updatedData,
         )
         .then((res) => {

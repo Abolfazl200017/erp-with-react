@@ -13,9 +13,9 @@ import {
 } from '@mui/material';
 import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
-import { UserData } from '../../redux/users/usersSlice';
 import { addUser, updateUser, deleteUser } from '../../services/usersServices';
 import useSnackbar from '../../components/Snackbar/useSnackbar';
+import { UserData } from './UsersContainer';
 
 export type UserForm = {
   username: string;
