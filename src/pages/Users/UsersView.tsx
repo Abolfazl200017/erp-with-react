@@ -1,6 +1,7 @@
 import CustomTableContainer from 'components/CustomTable';
 import UserDialog from './UserDialog';
 import { Box, Button } from '@mui/material';
+import ExcelDownloadButton from '../../components/ExcelDownloadButton';
 
 function UsersView({
   users,
@@ -14,10 +15,11 @@ function UsersView({
 }) {
   return (
     <Box>
-      <Box sx={{ width: 1, display: 'flex', mb: 1 }}>
-        <Button variant="outlined" color="primary" onClick={() => handleOpenDialog(null, 'add')}>
+      <Box sx={{ width: 1, display: 'flex', alignItems: 'center', mb: 1 }}>
+        <Button variant="outlined" color="primary" onClick={() => handleOpenDialog(null, 'add')} sx={{ mr: 1}}>
           افزودن کاربر
         </Button>
+        <ExcelDownloadButton data={users} fileName='users-list' />
       </Box>
       <CustomTableContainer
         list={users.map((user, i) => ({

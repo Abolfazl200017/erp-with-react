@@ -4,6 +4,7 @@ import CustomTableContainer from 'components/CustomTable';
 import ArticleDialog from './ArticleDialog';
 import { Article } from './ArticlesContainer';
 import { GridColDef } from '@mui/x-data-grid';
+import ExcelDownloadButton from 'components/ExcelDownloadButton';
 
 interface ArticlesViewProps {
   articles: Article[];
@@ -28,10 +29,11 @@ const ArticlesView: React.FC<ArticlesViewProps> = ({
 }) => {
   return (
     <Box>
-      <Box sx={{ width: 1, display: 'flex', mb: 1 }}>
+      <Box sx={{ width: 1, display: 'flex', alignItems: 'center', mb: 1 }}>
         <Button variant="outlined" onClick={() => handleOpenDialog(null, 'add')}>
           افزودن مقاله
         </Button>
+        <ExcelDownloadButton data={articles} fileName='articles-list' />
       </Box>
       <CustomTableContainer list={articles} columnHeaders={columnHeaders} />
       <ArticleDialog
