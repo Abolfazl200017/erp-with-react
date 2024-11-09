@@ -4,8 +4,11 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import Drawer from '@mui/material/Drawer';
 import { DRAWER_WIDTH } from 'config/CONSTANT';
-import { Box, styled } from '@mui/material';
-import CategorySkeleton from './CategorySkeleton';
+import { Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, styled } from '@mui/material';
+import { Link as RouterLink } from 'react-router-dom'
+import GroupIcon from '@mui/icons-material/Group';
+import ArticleIcon from '@mui/icons-material/Article';
+import FolderIcon from '@mui/icons-material/Folder';
 
 export const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -30,14 +33,51 @@ function SidebarView({ theme, open, handleDrawerClose }) {
     >
       <DrawerHeader sx={{ display: 'flex', alignItems: 'center', width: '100%', justifyContent: 'space-between' }}>
         <Box component="span" sx={{ mx: 3, fontWeight: 'fontWeightSemiBold' }}>
-          دسته بندی‌ها
+
         </Box>
         <IconButton onClick={handleDrawerClose}>
           {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
         </IconButton>
       </DrawerHeader>
       <Divider />
-      <CategorySkeleton />
+      <List>
+        <RouterLink to="/users" onClick={handleDrawerClose}>
+          <ListItem>
+            <ListItemButton>
+              <ListItemIcon>
+                <GroupIcon />
+              </ListItemIcon>
+              <ListItemText sx={{ textDecoration: 'none', color: 'white', }}>
+                کاربران
+              </ListItemText>
+            </ListItemButton>
+          </ListItem>
+        </RouterLink>
+        <RouterLink to="/articles" onClick={handleDrawerClose}>
+          <ListItem>
+            <ListItemButton>
+              <ListItemIcon>
+                <ArticleIcon />
+              </ListItemIcon>
+              <ListItemText sx={{ textDecoration: 'none', color: 'white', }}>
+                مقالات
+              </ListItemText>
+            </ListItemButton>
+          </ListItem>
+        </RouterLink>
+        <RouterLink to="/files" onClick={handleDrawerClose}>
+          <ListItem>
+            <ListItemButton>
+              <ListItemIcon>
+                <FolderIcon />
+              </ListItemIcon>
+              <ListItemText sx={{ textDecoration: 'none', color: 'white', }}>
+                مرکز فایل
+              </ListItemText>
+            </ListItemButton>
+          </ListItem>
+        </RouterLink>
+      </List>
     </Drawer>
   );
 }
