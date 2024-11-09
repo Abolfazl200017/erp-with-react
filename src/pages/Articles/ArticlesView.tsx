@@ -30,7 +30,7 @@ const ArticlesView: React.FC<ArticlesViewProps> = ({
   return (
     <Box>
       <Box sx={{ width: 1, display: 'flex', alignItems: 'center', mb: 1 }}>
-        <Button variant="outlined" onClick={() => handleOpenDialog(null, 'add')}>
+        <Button variant="outlined" onClick={() => handleOpenDialog(null, 'add')} sx={{ mr: 1}}>
           افزودن مقاله
         </Button>
         <ExcelDownloadButton data={articles} fileName='articles-list' />
