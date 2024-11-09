@@ -6,6 +6,17 @@ import CloseIcon from '@mui/icons-material/Close';
 export const FilesContainer = () => {
   const [images, setImages] = useState([]);
 
+  useEffect(() => {
+    // Retrieve images from localStorage on mount
+    const savedImages = JSON.parse(localStorage.getItem('images')) || [];
+    setImages(savedImages);
+  }, []);
+
+  useEffect(() => {
+    // Save images to localStorage whenever they change
+    localStorage.setItem('images', JSON.stringify(images));
+  }, [images]);
+
   const onDrop = (acceptedFiles) => {
     const newImages = acceptedFiles.map((file) => ({
       id: URL.createObjectURL(file),
@@ -24,12 +35,6 @@ export const FilesContainer = () => {
     accept,
     onDrop,
   });
-
-  useEffect(() => {
-    return () => {
-      images.forEach((img) => URL.revokeObjectURL(img.id));
-    };
-  }, [images]);
 
   return (
     <Box>
