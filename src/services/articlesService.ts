@@ -17,7 +17,7 @@ export const getAllArticles = () => {
           reject({ ...err, message: `Error in getAllArticles axios! ${err.message}` });
         });
     } catch (error) {
-      console.error('in userServices > getAllArticles, Err===', error);
+      console.error('in articleServices > getAllArticles, Err===', error);
       reject(SYSTEM_ERROR);
     }
   });
@@ -32,17 +32,17 @@ export const deleteArticle = (id:number) => {
           resolve(res.data);
         })
         .catch((err) => {
-          reject({ ...err, message: `Error in delete user axios! ${err.message}` });
+          reject({ ...err, message: `Error in delete article axios! ${err.message}` });
         });
     } catch (error) {
-      console.error('in userServices > delete user, Err===', error);
+      console.error('in articleServices > delete article, Err===', error);
       reject(SYSTEM_ERROR);
     }
   });
 };
 
 export const updateArticle = (id:number, updatedData: ArticleForm) => {
-  return new Promise((resolve, reject) => {
+  return new Promise<Article>((resolve, reject) => {
     try {
       axios
         .patch(
@@ -53,17 +53,17 @@ export const updateArticle = (id:number, updatedData: ArticleForm) => {
           resolve(res.data);
         })
         .catch((err) => {
-          reject({ ...err, message: `Error in patch user axios! ${err.message}` });
+          reject({ ...err, message: `Error in patch article axios! ${err.message}` });
         });
     } catch (error) {
-      console.error('in userServices > patch user, Err===', error);
+      console.error('in articleServices > patch article, Err===', error);
       reject(SYSTEM_ERROR);
     }
   });
 };
 
 export const addArticle = (updatedData: ArticleForm) => {
-  return new Promise((resolve, reject) => {
+  return new Promise<Article>((resolve, reject) => {
     try {
       axios
         .post(
@@ -74,10 +74,10 @@ export const addArticle = (updatedData: ArticleForm) => {
           resolve(res.data);
         })
         .catch((err) => {
-          reject({ ...err, message: `Error in patch user axios! ${err.message}` });
+          reject({ ...err, message: `Error in patch article axios! ${err.message}` });
         });
     } catch (error) {
-      console.error('in userServices > patch user, Err===', error);
+      console.error('in articleServices > patch article, Err===', error);
       reject(SYSTEM_ERROR);
     }
   });

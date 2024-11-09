@@ -1,3 +1,3 @@
-import { ArticleContainer } from "./ArticlesContainer";
+import { ArticlesContainer } from "./ArticlesContainer";
 
-export default ArticleContainer
+export default ArticlesContainer

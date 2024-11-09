@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
-import { addUser, updateUser, deleteUser } from '../../services/usersServices';
+import { addUser, updateUser, deleteUser } from '../../services/usersService';
 import useSnackbar from '../../components/Snackbar/useSnackbar';
 import { UserData } from './UsersContainer';
 

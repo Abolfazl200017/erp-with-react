@@ -6,7 +6,7 @@ import { TableSkeleton } from 'components/Skeleton';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-import { getAllUsers } from '../../services/usersServices';
+import { getAllUsers } from '../../services/usersService';
 import UsersView from './UsersView';
 
 export type UserData = {

@@ -51,7 +51,7 @@ function Header({ handleDrawerOpen, open }) {
             {WEBSITE_TITLE}
           </Typography>
         </Box>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}> nothing </Box>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>  </Box>
       </Toolbar>
     </AppBar>
   );
