@@ -65,9 +65,7 @@ const AppProviders = ({ children }) => (
   <Provider store={store}>
     <CacheProvider value={cacheRtl}>
       <ThemeProvider theme={theme}>
-        <SnackbarProvider>
-          {children}
-        </SnackbarProvider>
+        <SnackbarProvider>{children}</SnackbarProvider>
       </ThemeProvider>
     </CacheProvider>
   </Provider>
