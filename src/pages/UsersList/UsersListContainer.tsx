@@ -6,10 +6,9 @@ import { TableSkeleton } from 'components/Skeleton';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { UserData } from '../../redux/users/usersSlice';
-import CustomTableContainer from 'components/CustomTable';
-// import useSnackbar from '../../components/Snackbar/useSnackbar';
-import UserDialog from './UserDialog';
+
 import { getAllUsers } from '../../services/usersServices';
+import UsersListView from './UsersListView';
 
 export const UsersListContainer = () => {
   const [users, setUsers] = useState<UserData[] | 'loading'>('loading');
@@ -93,27 +92,6 @@ export const UsersListContainer = () => {
   if (users === 'loading') return <TableSkeleton />;
 
   return (
-    <Box>
-      <Box sx={{ width: 1, display: 'flex', mb: 1 }}>
-        <Button variant="outlined" color="primary" onClick={() => handleOpenDialog(null, 'add')}>
-          افزودن کاربر
-        </Button>
-      </Box>
-      <CustomTableContainer
-        list={users.map((user, i) => ({
-          ...user,
-          index: i + 1,
-          gender: user.gender === 'male' ? 'آقا' : 'خانم',
-        }))}
-        columnHeaders={columnHeaders}
-      />
-      <UserDialog
-        open={openDialog}
-        onClose={handleCloseDialog}
-        updateUsersState={updateUsersState}
-        dialogAction={dialogAction}
-        selectedUser={selectedUser}
-      />
-    </Box>
+    <UsersListView users={users} selectedUser={selectedUser} updateUsersState={updateUsersState} handleOpenDialog={handleOpenDialog} handleCloseDialog={handleCloseDialog} openDialog={openDialog} dialogAction={dialogAction} columnHeaders={columnHeaders} />
   );
 };
