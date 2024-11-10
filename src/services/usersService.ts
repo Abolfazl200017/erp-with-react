@@ -1,5 +1,5 @@
 import { SYSTEM_ERROR } from 'config/CONSTANT';
-import axios from './axiosInstance';
+import axios from './apiInstance';
 import { ADD_USER, DELETE_USER, GET_ALL_USERS, PATCH_USER } from './CONSTANT';
 import { UserForm } from '../pages/Users/UserDialog';
 import { UserData } from 'pages/Users/UsersContainer';

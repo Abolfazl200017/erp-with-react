@@ -1,5 +1,5 @@
 // userService.test.ts
-import axios from '../../services/axiosInstance';
+import axios from '../../services/apiInstance';
 import { getAllUsers, deleteUser, updateUser, addUser } from '../../services/usersService';
 import { SYSTEM_ERROR } from 'config/CONSTANT';
 import { ADD_USER, DELETE_USER, GET_ALL_USERS, PATCH_USER } from '../../services/CONSTANT';

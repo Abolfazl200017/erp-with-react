@@ -1,12 +1,12 @@
 import axios from 'axios';
-import { BASE_URL } from './CONSTANT';
+import { API_BASE_URL } from './CONSTANT';
 import { SERVER_ERROR } from 'navigation/CONSTANT';
 
-const axiosInstance = axios.create({
-  baseURL: BASE_URL //process.env.REACT_APP_API_BASE_URL
+const apiInstance = axios.create({
+  baseURL: API_BASE_URL //process.env.REACT_APP_API_BASE_URL
 });
 
-axiosInstance.interceptors.response.use(
+apiInstance.interceptors.response.use(
   response => response, // Directly return successful responses.
   async error => {
 
@@ -19,4 +19,4 @@ axiosInstance.interceptors.response.use(
   }
 );
 
-export default axiosInstance;
+export default apiInstance;

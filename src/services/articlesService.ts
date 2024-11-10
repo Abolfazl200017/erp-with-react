@@ -1,5 +1,5 @@
 import { SYSTEM_ERROR } from 'config/CONSTANT';
-import axios from './axiosInstance';
+import axios from './apiInstance';
 import { ADD_ARTICLE, DELETE_ARTICLE, GET_ALL_ARTICLES, PATCH_ARTICLE } from './CONSTANT';
 import { Article } from 'pages/Articles/ArticlesContainer';
 import { ArticleForm } from 'pages/Articles/ArticleDialog';

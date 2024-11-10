@@ -1,5 +1,5 @@
 // articleService.test.ts
-import axios from '../../services/axiosInstance';
+import axios from '../../services/apiInstance';
 import { getAllArticles, deleteArticle, updateArticle, addArticle } from '../../services/articlesService';
 import { SYSTEM_ERROR } from 'config/CONSTANT';
 import { ADD_ARTICLE, DELETE_ARTICLE, GET_ALL_ARTICLES, PATCH_ARTICLE } from '../../services/CONSTANT';
