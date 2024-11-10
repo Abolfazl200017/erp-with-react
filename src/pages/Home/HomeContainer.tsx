@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Box, Button, Container, Link, Typography } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
-import Chart from 'react-apexcharts';
 import { WEBSITE_TITLE } from 'config/CONSTANT';
-import { manager, article, banner } from '../../assets/image';
+import { manager, banner } from '../../assets/image';
+import BarChartContainer from './BarChartContainer';
+import PieChartContainer from './PieChartContainer';
 
 export const HomeContainer = () => {
   const [showNav, setShowNav] = useState(false);
@@ -16,44 +17,6 @@ export const HomeContainer = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  const options = {
-    chart: {
-      id: 'basic-bar',
-    },
-    xaxis: {
-      categories: [
-        'فروردین',
-        'اردیبهشت',
-        'خرداد',
-        'تیر',
-        'مرداد',
-        'شهریور',
-        'مهر',
-        'آبان',
-        'آذر',
-        'دی',
-        'بهمن',
-        'اسفند',
-      ], // Jalali months
-    },
-  };
-
-  const series = [
-    {
-      name: 'Articles View',
-      data: [20, 30, 45, 50, 55, 60, 70, 65, 80, 85, 75, 90],
-    },
-  ];
-
-  const pieOptions = {
-    chart: {
-      id: 'user-age-pie',
-    },
-    labels: ['۰-۱۸', '۱۹-۲۹', '۳۰-۳۹', '۴۰-۴۹', '۵۰-۵۹', '۶۰+'],
-  };
-  
-  const pieSeries = [15, 25, 40, 20, 10, 5]; 
   
 
   return (
@@ -163,13 +126,7 @@ export const HomeContainer = () => {
             از ابزار تحلیل استفاده کنید
           </Typography>
         </Box>
-        <Box sx={{ px: 3 }}>
-          <Typography color="primary" variant="h4" sx={{ mb: 2 }}>
-            آمار بازید مقالات
-          </Typography>
-          <Chart options={options} series={series} type="bar" width="100%" />
-          <Box component="img" src={article} sx={{ width: 1 }} />
-        </Box>
+        <BarChartContainer />
         <Box sx={{ display: 'flex', width: 1, px: { xs: 2, sm: 4, md: 6 }, pt: 20 }}>
           <Typography
             variant="h5"
@@ -199,12 +156,7 @@ export const HomeContainer = () => {
             در جداول اطلاعات مورد نیاز خود را بیابید
           </Typography>
         </Box>
-        <Box sx={{ mx: 'auto', width: 3/4, mt: 20, mb:10 }}>
-          <Typography color="primary" variant="h4" sx={{ mb: 2 }}>
-            میانگین سنی کاربران
-          </Typography>
-          <Chart options={pieOptions} series={pieSeries} type='pie' width="100%" />
-        </Box>
+        <PieChartContainer />
       </Container>
     </Box>
   );
