@@ -49,17 +49,20 @@ export default tseslint.config({
 })
 ```
 
-``` login
-Sample of User Pass : 
+``` docker on production
+  docker build -t erp-with-react:prod -f Dockerfile .
+  docker run -p 80:80 erp-with-react:prod
+```
 
+``` docker on development
+  docker build -t erp-with-react:dev -f Dockerfile.dev .
+  Unix Command
+  docker run -p 8080:8080 -v $(pwd):/app -v /app/node_modules erp-with-react:dev
+  Cmd Command
+  docker run -p 8080:8080 -v %cd%:/app -v /app/node_modules erp-with-react:dev
+```
 
-  {
-      "username": "sophiab",
-      "password": "sophiabpass",
-  }
-
-  {
-    "username": "emilys",
-    "password": "emilyspass",
-  }
+``` docker compose
+  DOCKERFILE=Dockerfile docker-compose up
+  DOCKERFILE=Dockerfile.dev docker-compose up
 ```
