@@ -4,5 +4,5 @@ COPY package.json package-lock.json ./
 COPY public ./public
 COPY src ./src
 RUN npm install
-COPY . .
+COPY . . 
 CMD ["npm", "run", "dev"]
