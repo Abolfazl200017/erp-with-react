@@ -6,3 +6,4 @@ COPY src ./src
 RUN npm install
 COPY . . 
 CMD ["npm", "run", "dev"]
+# docker run -p 8080:8080 erp-with-react
