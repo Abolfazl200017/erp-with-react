@@ -11,8 +11,8 @@ import Users from 'pages/Users';
 export const RouterConfig = () => {
   return (
     <Routes>
+      <Route path={HOME} element={<Home />} />
       <Route path="/" element={<MainLayout />}>
-        <Route path={HOME} element={<Home />} />
         <Route path="/users" element={<Users />} />
         {/* <Route path="/users/:id" element={<div>single user worksdd</div>} /> */}
         <Route path="/articles" element={<Articles />} />
