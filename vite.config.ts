@@ -18,4 +18,9 @@ export default defineConfig({
       contexts: "src/contexts"
     },
   },
+  server: {
+    host: true,
+    strictPort: true,
+    port: 8080,
+  }
 })

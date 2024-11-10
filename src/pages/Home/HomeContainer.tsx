@@ -1,6 +1,4 @@
 import { Box, Container, Typography } from '@mui/material';
-// import { UsersAge } from './UsersAge';
-// import { ViewCount } from './ViewCount';
 import { manager, article } from '../../assets/image';
 
 export const HomeContainer = () => {
@@ -52,12 +50,6 @@ export const HomeContainer = () => {
         </Typography>
       </Box>
       <Box component="img" src={article} sx={{ width: 1 }}></Box>
-      {/* <Box sx={{ my: 15 }}>
-        <UsersAge />
-      </Box>
-      <Box sx={{ my: 15 }}>
-        <ViewCount />
-      </Box> */}
     </Container>
   );
 };
